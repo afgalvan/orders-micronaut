@@ -1,0 +1,7 @@
+micronaut:
+  application:
+    name: pedidos
+netty:
+  default:
+    allocator:
+      max-order: 3
