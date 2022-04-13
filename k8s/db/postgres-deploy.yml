@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jdbc-postgres
+spec:
+  selector:
+    matchLabels:
+      app: jdbc-postgres
+  template:
+    metadata:
+      labels:
+        app: jdbc-postgres
+    spec:
+      containers:
+        - name: jdbc-postgres
+          image: postgres:14.2-alpine3.15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "jdbc"
+            - name: POSTGRES_USER
+              value: "jdbc"
+            - name: POSTGRES_DB
+              value: "jdbc"
+          volumeMounts:
+            - name: jdbc-postgres-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: jdbc-postgres-data
+          persistentVolumeClaim:
+            claimName: jdbc-postgres-data-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jdbc-postgres-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: jdbc-postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jdbc-postgres-load-balancer
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: jdbc-postgres
