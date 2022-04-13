@@ -4,4 +4,6 @@ import tech.afgalvan.productos.models.Product;
 
 public interface ProductsService {
     Product saveProduct(Product product);
+
+    Iterable<Product> getProducts();
 }
