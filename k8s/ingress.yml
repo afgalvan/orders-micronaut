@@ -6,10 +6,10 @@ spec:
   rules:
     - http:
         paths:
-          - path: /
+          - path: /products
             pathType: Prefix
             backend:
               service:
-                name: jdbc-app
+                name: products-service
                 port:
                   number: 9000

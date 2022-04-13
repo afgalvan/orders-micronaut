@@ -1,4 +1,4 @@
-package Productos;
+package tech.afgalvan.productos;
 
 import io.micronaut.runtime.Micronaut;
 import io.swagger.v3.oas.annotations.*;
@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.info.*;
 
 @OpenAPIDefinition(
     info = @Info(
-            title = "Productos",
+            title = "productos",
             version = "0.0"
     )
 )

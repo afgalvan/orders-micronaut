@@ -1,4 +1,4 @@
-package Productos;
+package tech.afgalvan.productos;
 
 import io.micronaut.http.annotation.*;
 
