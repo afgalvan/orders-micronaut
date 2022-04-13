@@ -1,18 +1,18 @@
-package tech.afgalvan.productos.controllers.commands;
+package tech.afgalvan.productos.controllers.requests;
 
 import io.micronaut.core.annotation.Introspected;
 
 @Introspected
-public class CreateProductCommand {
+public class CreateProductRequest {
     private String name;
     private int price;
 
-    public CreateProductCommand(String name, int price) {
+    public CreateProductRequest(String name, int price) {
         this.name = name;
         this.price = price;
     }
 
-    public CreateProductCommand() {
+    public CreateProductRequest() {
     }
 
     public void setName(String name) {

@@ -24,7 +24,7 @@ class ProductsControllerTest {
     ProductsService productsService;
 
     @Inject
-    @Client("/products")
+    @Client("/api/products")
     HttpClient client;
 
     @Test
