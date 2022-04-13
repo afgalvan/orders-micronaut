@@ -4,6 +4,7 @@ public class ProductResponse {
     private int id;
     private String name;
     private int price;
+    private String imageUri;
 
     public int getId() {
         return id;
@@ -27,5 +28,13 @@ public class ProductResponse {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 }

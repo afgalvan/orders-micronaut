@@ -8,18 +8,18 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductStub {
-    public static final Product DEFAULT = new Product("name", 2000);
-    public static final CreateProductRequest CREATE_PRODUCT_COMMAND = new CreateProductRequest("name", 2000);
+    public static final Product DEFAULT = new Product("name", "https://img.jakpost.net/c/2017/05/22/2017_05_22_27382_1495457626._large.jpg", 2000.0);
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public static Product getStoredProductAnswer() {
-        return new Product(1, DEFAULT.getName(), DEFAULT.getPrice());
+        return new Product(1, DEFAULT.getName(), DEFAULT.getImageUri(), DEFAULT.getPrice());
     }
 
-    public static Iterable<Product> getProductsAnswer() {
+    public static List<Product> getProductsAnswer() {
         return List.of(getStoredProductAnswer());
     }
 
     public static Map createProductRequest() {
-        return new ObjectMapper().convertValue(CREATE_PRODUCT_COMMAND, Map.class);
+        return mapper.convertValue(DEFAULT, Map.class);
     }
 }

@@ -1,5 +1,6 @@
 package tech.afgalvan.productos.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
@@ -12,16 +13,19 @@ public class Product {
     @GeneratedValue(GeneratedValue.Type.AUTO)
     private Integer id;
     private final String name;
-    private final Integer price;
+    private final String imageUri;
+    private final Double price;
 
-    public Product(String name, Integer price) {
+    public Product(String name, String imageUri, Double price) {
         this.name = name;
+        this.imageUri = imageUri;
         this.price = price;
     }
 
-    public Product(Integer id, String name, Integer price) {
+    public Product(Integer id, String name, String imageUri, Double price) {
         this.id = id;
         this.name = name;
+        this.imageUri = imageUri;
         this.price = price;
     }
 
@@ -29,7 +33,7 @@ public class Product {
         return name;
     }
 
-    public int getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -41,11 +45,20 @@ public class Product {
         return id;
     }
 
+    public String getImageUri() {
+        return imageUri;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Product)) return false;
         Product product = (Product) o;
         return getId().equals(product.getId()) && Objects.equals(getName(), product.getName()) && Objects.equals(getPrice(), product.getPrice());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getImageUri(), getPrice());
     }
 }
