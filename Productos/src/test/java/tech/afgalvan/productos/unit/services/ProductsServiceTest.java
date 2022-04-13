@@ -1,4 +1,4 @@
-package tech.afgalvan.productos.services;
+package tech.afgalvan.productos.unit.services;
 
 import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.invocation.InvocationOnMock;
 import tech.afgalvan.productos.data.ProductsRepository;
 import tech.afgalvan.productos.models.Product;
+import tech.afgalvan.productos.services.ProductsServiceImp;
 import tech.afgalvan.productos.stubs.ProductStub;
 
 import java.util.ArrayList;
