@@ -1,0 +1,31 @@
+---
+name: Java CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.0
+
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v2.3.3
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+
+      - name: 🐘 Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: 🛠 Build project
+        run: ./gradlew build
