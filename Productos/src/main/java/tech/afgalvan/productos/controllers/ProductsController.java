@@ -6,6 +6,7 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import tech.afgalvan.productos.controllers.commands.CreateProductCommand;
 import tech.afgalvan.productos.models.Product;
 import tech.afgalvan.productos.services.ProductsService;
@@ -23,10 +24,12 @@ public class ProductsController {
     }
 
     @Get
-    public List<Product> hello() {
+    public List<Product> getProducts() {
         return productsService.getProducts();
     }
 
+    @ApiResponse(responseCode = "201", description = "Product successfully created")
+    @ApiResponse(responseCode = "400", description = "Bad request")
     @Post
     public HttpResponse<Product> saveProduct(@Body @Valid CreateProductCommand command) {
         Product product = productsService.saveProduct(new Product(command.getName(), command.getPrice()));
@@ -41,6 +44,6 @@ public class ProductsController {
     }
 
     private URI location(Integer id) {
-        return URI.create("/products" + id);
+        return URI.create("/products/" + id);
     }
 }
