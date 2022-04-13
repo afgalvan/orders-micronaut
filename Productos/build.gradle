@@ -30,12 +30,13 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:testcontainers")
     implementation("io.micronaut:micronaut-validation")
-
+    testImplementation('org.mockito:mockito-inline:4.4.0')
+    testImplementation('org.mockito:mockito-junit-jupiter:4.4.0')
 }
 
 
 application {
-    mainClass.set("Productos.Application")
+    mainClass.set("tech.afgalvan.productos.Application")
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("11")
