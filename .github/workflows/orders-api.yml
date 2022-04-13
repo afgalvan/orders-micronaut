@@ -22,10 +22,9 @@ jobs:
       - name: ☕ Setup Java
         uses: actions/setup-java@v2
         with:
+          distribution: 'temurin'
           java-version: 17
-
-      - name: 🐘 Setup Gradle
-        uses: gradle/gradle-build-action@v2
+          cache: 'gradle'
 
       - name: 🛠 Build project
-        run: gradle build
+        run: ./gradlew build --no-daemon
