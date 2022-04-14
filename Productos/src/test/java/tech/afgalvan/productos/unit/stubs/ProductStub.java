@@ -1,7 +1,6 @@
-package tech.afgalvan.productos.stubs;
+package tech.afgalvan.productos.unit.stubs;
 
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
-import tech.afgalvan.productos.controllers.requests.CreateProductRequest;
 import tech.afgalvan.productos.models.Product;
 
 import java.util.List;

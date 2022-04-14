@@ -30,6 +30,7 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:testcontainers")
     implementation("io.micronaut:micronaut-validation")
+    implementation("io.cucumber:cucumber-java:7.2.3")
     testImplementation('org.mockito:mockito-inline:4.4.0')
     testImplementation('org.mockito:mockito-junit-jupiter:4.4.0')
 }
@@ -38,6 +39,7 @@ dependencies {
 application {
     mainClass.set("tech.afgalvan.productos.Application")
 }
+
 java {
     sourceCompatibility = JavaVersion.toVersion("11")
     targetCompatibility = JavaVersion.toVersion("11")
@@ -50,6 +52,24 @@ tasks {
         }
     }
 }
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'gradle.cucumber', 'src/test/resources']
+        }
+    }
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
 graalvmNative.toolchainDetection = false
 micronaut {
     runtime("netty")

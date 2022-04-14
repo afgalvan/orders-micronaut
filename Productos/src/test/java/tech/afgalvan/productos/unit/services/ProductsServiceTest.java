@@ -8,7 +8,7 @@ import org.mockito.invocation.InvocationOnMock;
 import tech.afgalvan.productos.data.ProductsRepository;
 import tech.afgalvan.productos.models.Product;
 import tech.afgalvan.productos.services.ProductsServiceImp;
-import tech.afgalvan.productos.stubs.ProductStub;
+import tech.afgalvan.productos.unit.stubs.ProductStub;
 
 import java.util.ArrayList;
 import java.util.List;

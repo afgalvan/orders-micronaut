@@ -33,7 +33,6 @@ public class ProductsController {
     public ProductsController(ProductsService productsService, ObjectMapper mapper) {
         this.productsService = productsService;
         logger = LoggerFactory.getLogger(ProductsController.class);
-        logger.error("TEST THIS");
         this.mapper = mapper;
     }
 
