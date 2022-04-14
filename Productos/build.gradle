@@ -31,6 +31,8 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers")
     implementation("io.micronaut:micronaut-validation")
     implementation("io.cucumber:cucumber-java:7.2.3")
+    implementation("io.cucumber:cucumber-junit:7.2.3")
+    testImplementation('org.junit.vintage:junit-vintage-engine:5.8.2')
     testImplementation('org.mockito:mockito-inline:4.4.0')
     testImplementation('org.mockito:mockito-junit-jupiter:4.4.0')
 }
@@ -59,7 +61,7 @@ task cucumber() {
         javaexec {
             main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = ['--plugin', 'pretty', '--glue', 'gradle.cucumber', 'src/test/resources']
+            args = ['--plugin', 'pretty', '--glue', 'tech.afgalvan.productos.integration', 'src/test/resources']
         }
     }
 }

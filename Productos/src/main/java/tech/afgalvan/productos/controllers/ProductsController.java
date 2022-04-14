@@ -11,8 +11,6 @@ import io.micronaut.http.annotation.Post;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import tech.afgalvan.productos.controllers.requests.CreateProductRequest;
 import tech.afgalvan.productos.controllers.responses.ProductResponse;
 import tech.afgalvan.productos.models.Product;
@@ -28,11 +26,9 @@ import java.util.stream.Collectors;
 public class ProductsController {
     private final ProductsService productsService;
     private final ObjectMapper mapper;
-    private final Logger logger;
 
     public ProductsController(ProductsService productsService, ObjectMapper mapper) {
         this.productsService = productsService;
-        logger = LoggerFactory.getLogger(ProductsController.class);
         this.mapper = mapper;
     }
 
@@ -57,7 +53,6 @@ public class ProductsController {
                     .created(response)
                     .headers(headers -> addLocationHeader(headers, response));
         } catch (ConstraintViolationException | DataAccessException e) {
-            logger.error(e.getMessage());
             return HttpResponse.badRequest("Error while saving the product");
         }
     }
