@@ -10,10 +10,9 @@ import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import tech.afgalvan.productos.controllers.responses.ProductResponse;
 import tech.afgalvan.productos.models.Product;
 import tech.afgalvan.productos.services.ProductsService;
-import tech.afgalvan.productos.stubs.ProductStub;
+import tech.afgalvan.productos.unit.stubs.ProductStub;
 
 import java.util.List;
 
