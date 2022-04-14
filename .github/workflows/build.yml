@@ -28,6 +28,3 @@ jobs:
 
       - name: 🛠 Build project
         run: ./gradlew build --no-daemon
-
-      - name: Run integration tests
-        run: ./gradlew cucumber --no-daemon
