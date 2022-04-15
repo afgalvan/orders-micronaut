@@ -1,4 +1,4 @@
-package tech.afgalvan.productos.integration;
+package tech.afgalvan.productos.integration.steps;
 
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.BeforeAll;

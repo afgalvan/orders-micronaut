@@ -12,14 +12,17 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import tech.afgalvan.productos.controllers.requests.CreateProductRequest;
+import tech.afgalvan.productos.controllers.responses.ErrorResponse;
 import tech.afgalvan.productos.controllers.responses.ProductResponse;
 import tech.afgalvan.productos.models.Product;
+import tech.afgalvan.productos.models.exceptions.ProductNotFoundException;
 import tech.afgalvan.productos.services.ProductsService;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller("/api/products")
@@ -38,6 +41,19 @@ public class ProductsController {
                 .stream()
                 .map(this::mapProductToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @ApiResponse(responseCode = "200", description = "Product found", content = @Content(schema = @Schema(implementation = ProductResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @Get("/{id}")
+    public HttpResponse getProductById(int id) {
+        try {
+            Product product = productsService.getProductById(id);
+            return HttpResponse.ok(mapper.convertValue(product, ProductResponse.class));
+        } catch (ProductNotFoundException e) {
+            return HttpResponse.notFound(new ErrorResponse(e.getMessage()));
+        }
     }
 
     @ApiResponse(content = @Content(schema = @Schema(implementation = ProductResponse.class)))

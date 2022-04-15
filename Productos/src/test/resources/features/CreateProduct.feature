@@ -8,7 +8,7 @@ Feature: Create a new product
     """
     {
       "name": "new product",
-      "price": 2000,
+      "price": 2000.0,
       "imageUri": "some-temporal-uri"
     }
     """
@@ -18,7 +18,7 @@ Feature: Create a new product
     {
       "id": 1,
       "name": "new product",
-      "price": 2000,
+      "price": 2000.0,
       "imageUri": "some-temporal-uri"
     }
     """

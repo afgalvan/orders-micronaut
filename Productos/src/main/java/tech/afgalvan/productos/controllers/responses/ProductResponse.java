@@ -3,7 +3,7 @@ package tech.afgalvan.productos.controllers.responses;
 public class ProductResponse {
     private int id;
     private String name;
-    private int price;
+    private double price;
     private String imageUri;
 
     public int getId() {
@@ -22,11 +22,11 @@ public class ProductResponse {
         this.name = name;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

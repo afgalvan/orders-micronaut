@@ -4,16 +4,18 @@ import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.mockito.invocation.InvocationOnMock;
 import tech.afgalvan.productos.data.ProductsRepository;
 import tech.afgalvan.productos.models.Product;
+import tech.afgalvan.productos.models.exceptions.ProductNotFoundException;
 import tech.afgalvan.productos.services.ProductsServiceImp;
 import tech.afgalvan.productos.unit.stubs.ProductStub;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @MicronautTest
@@ -22,8 +24,6 @@ class ProductsServiceTest {
     ProductsServiceImp productsService;
     @Inject
     ProductsRepository productsRepository;
-
-    private final List<Product> products = new ArrayList<>();
 
     @Test
     void testProductIdIsRetrievedCorrectly() {
@@ -37,19 +37,26 @@ class ProductsServiceTest {
 
     @Test
     void testProductIsStoredCorrectly() {
-        Product product = ProductStub.DEFAULT;
-        when(productsRepository.save(product)).then(this::addProductMock);
         when(productsRepository.findAll()).then(invocation -> ProductStub.getProductsAnswer());
-
-        productsService.saveProduct(product);
-        assertEquals(products, productsService.getProducts());
+        assertEquals(ProductStub.getProductsAnswer(), productsService.getProducts());
         verify(productsRepository).findAll();
     }
 
-    Product addProductMock(InvocationOnMock invocation) {
-        Product productWithId = ProductStub.getStoredProductAnswer();
-        products.add(productWithId);
-        return productWithId;
+    @Test
+    void testThatProductCanBeFound() {
+        when(productsRepository.findById(any(Integer.class)))
+                .then(invocation -> Optional.of(ProductStub.getStoredProductAnswer()));
+        Product product = productsService.getProductById(1);
+        assertEquals(ProductStub.getStoredProductAnswer(), product);
+        verify(productsRepository).findById(1);
+    }
+
+    @Test
+    void testThatProductCantBeFound() {
+        when(productsRepository.findById(any(Integer.class)))
+                .then(invocation -> Optional.empty());
+        assertThrows(ProductNotFoundException.class, () -> productsService.getProductById(1));
+        verify(productsRepository).findById(1);
     }
 
     @MockBean(ProductsRepository.class)

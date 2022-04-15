@@ -11,9 +11,10 @@ public class CreateProductRequest {
     private URI imageUri;
     private double price;
 
-    public CreateProductRequest(String name, double price) {
+    public CreateProductRequest(String name, String imageUri, double price) {
         this.name = name;
         this.price = price;
+        this.imageUri = URI.create(imageUri);
     }
 
     public CreateProductRequest() {
