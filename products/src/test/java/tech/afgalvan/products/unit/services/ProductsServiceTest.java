@@ -8,7 +8,7 @@ import tech.afgalvan.products.data.ProductsRepository;
 import tech.afgalvan.products.models.Product;
 import tech.afgalvan.products.models.exceptions.ProductNotFoundException;
 import tech.afgalvan.products.services.ProductsServiceImp;
-import tech.afgalvan.products.unit.stubs.ProductStub;
+import tech.afgalvan.products.shared.stubs.ProductStub;
 
 import java.util.Optional;
 
@@ -24,18 +24,19 @@ class ProductsServiceTest {
     ProductsRepository productsRepository;
 
     @Test
-    void testProductIdIsRetrievedCorrectly() {
-        Product product = ProductStub.DEFAULT;
-        when(productsRepository.save(product)).then(invocation -> ProductStub.getStoredProductAnswer());
+    void testProductIsStoredCorrectly() {
+        when(productsRepository.save(ProductStub.DEFAULT))
+            .then(invocation -> ProductStub.getStoredProductAnswer());
 
-        Product storedProduct = productsService.saveProduct(product);
+        final Product storedProduct = productsService.saveProduct(ProductStub.DEFAULT);
         assertEquals(ProductStub.getStoredProductAnswer(), storedProduct);
-        verify(productsRepository).save(product);
+        verify(productsRepository).save(ProductStub.DEFAULT);
     }
 
     @Test
-    void testProductIsStoredCorrectly() {
-        when(productsRepository.asList()).then(invocation -> ProductStub.getProductsAnswer());
+    void testProductsAreRetrievedCorrectly() {
+        when(productsRepository.asList())
+            .then(invocation -> ProductStub.getProductsAnswer());
         assertEquals(ProductStub.getProductsAnswer(), productsService.getProducts());
         verify(productsRepository).asList();
     }
@@ -44,13 +45,12 @@ class ProductsServiceTest {
     void testThatProductCanBeFound() {
         when(productsRepository.findById(any(Integer.class)))
                 .then(invocation -> Optional.of(ProductStub.getStoredProductAnswer()));
-        Product product = productsService.getProductById(1);
-        assertEquals(ProductStub.getStoredProductAnswer(), product);
+        assertEquals(ProductStub.getStoredProductAnswer(), productsService.getProductById(1));
         verify(productsRepository).findById(1);
     }
 
     @Test
-    void testThatProductCantBeFound() {
+    void testThatProductCanNotBeFound() {
         when(productsRepository.findById(any(Integer.class)))
                 .then(invocation -> Optional.empty());
         assertThrows(ProductNotFoundException.class, () -> productsService.getProductById(1));
