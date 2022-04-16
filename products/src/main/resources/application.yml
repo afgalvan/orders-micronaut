@@ -1,0 +1,25 @@
+micronaut:
+  application:
+    name: products
+  server:
+    port: 9000
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+datasources:
+  default:
+    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/products`}
+    driverClassName: org.postgresql.Driver
+    username: ${JDBC_USER:postgres}
+    password: 'root'
+    schema-generate: CREATE_DROP
+    dialect: POSTGRES
+netty:
+  default:
+    allocator:
+      max-order: 3

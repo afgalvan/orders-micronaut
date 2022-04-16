@@ -1,3 +1,3 @@
 rootProject.name = 'Pedidos-Micronaut'
 include 'Pedidos'
-include 'Productos'
+include 'products'
