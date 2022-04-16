@@ -1,5 +1,7 @@
 package tech.afgalvan.products.controllers.responses;
 
+import java.time.LocalDateTime;
+
 public class ProductResponse implements Response {
     private int id;
     private String name;
@@ -7,6 +9,8 @@ public class ProductResponse implements Response {
     private String imageUri;
     private String description;
     private int stock;
+    private LocalDateTime creationDateTime;
+    private LocalDateTime updateDateTime;
 
     public int getId() {
         return id;
@@ -54,5 +58,21 @@ public class ProductResponse implements Response {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public void setCreationDateTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
+    }
+
+    public LocalDateTime getUpdateDateTime() {
+        return updateDateTime;
+    }
+
+    public void setUpdateDateTime(LocalDateTime updateDateTime) {
+        this.updateDateTime = updateDateTime;
     }
 }

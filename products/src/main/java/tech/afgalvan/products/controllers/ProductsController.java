@@ -51,7 +51,7 @@ public class ProductsController {
     public HttpResponse<Response> getProductById(int id) {
         try {
             Product product = productsService.getProductById(id);
-            return HttpResponse.ok(mapper.convertValue(product, ProductResponse.class));
+            return HttpResponse.ok(mapProductToResponse(product));
         } catch (ProductNotFoundException e) {
             return HttpResponse.notFound(new ErrorResponse(e.getMessage()));
         }
@@ -60,10 +60,10 @@ public class ProductsController {
     @ApiResponse(responseCode = "201", description = "Product successfully created", content = @Content(schema = @Schema(implementation = ProductResponse.class)))
     @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @Post
-    public HttpResponse<Response> saveProduct(@Body @Valid CreateProductRequest command) {
+    public HttpResponse<Response> saveProduct(@Body @Valid CreateProductRequest request) {
         try {
             Product product = productsService
-                .saveProduct(mapper.convertValue(command, Product.class));
+                .saveProduct(mapper.convertValue(request, Product.class));
             return HttpResponse.created(mapProductToResponse(product));
         } catch (ConstraintViolationException | DataAccessException e) {
             logger.error(e.getMessage());

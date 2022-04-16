@@ -3,18 +3,19 @@ package tech.afgalvan.products.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.client.HttpClient;
-import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import tech.afgalvan.products.controllers.requests.CreateProductRequest;
 import tech.afgalvan.products.controllers.responses.ProductResponse;
-import tech.afgalvan.products.integration.utils.HttpUtils;
+import tech.afgalvan.products.shared.ProductsClient;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,9 +27,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @MicronautTest
 class ProductsTest {
     private static final String[] products = {"shampoo", "pencil", "soap", "paper"};
+
     @Inject
-    @Client("/api")
-    HttpClient client;
+    ProductsClient client;
+
     @Inject
     ObjectMapper mapper;
 
@@ -37,10 +39,7 @@ class ProductsTest {
     }
 
     public Stream<ProductResponse> getAllProducts() {
-        @SuppressWarnings("unchecked")
-        Class<List<ProductResponse>> cls = (Class<List<ProductResponse>>) (Object) List.class;
-        return HttpUtils.GET("/products", ProductResponse.class, cls)
-                .stream();
+        return client.getProducts().stream();
     }
 
     public static Stream<Arguments> generateRequests() {
@@ -49,16 +48,11 @@ class ProductsTest {
                 .map(Arguments::of);
     }
 
-    @BeforeEach
-    public void setUp() {
-        HttpUtils.setClient(client);
-    }
-
     @ParameterizedTest
     @MethodSource("generateRequests")
     @Order(1)
     void whenISendAPOSTRequestToTheProductsEndpoint_thenTheProductShouldBeSaved(CreateProductRequest request) {
-        HttpResponse<ProductResponse> response = HttpUtils.POST("/products", request, ProductResponse.class);
+        HttpResponse<ProductResponse> response = client.saveProduct(request);
         assertEquals(HttpStatus.CREATED, response.getStatus());
         assertNotNull(response.body());
     }
@@ -75,8 +69,16 @@ class ProductsTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3, 4})
     @Order(3)
-    void whenITryToFindAProductById_thenAllRegisteredProductsShouldBeRetrieved(int id) {
-        ProductResponse response = HttpUtils.GET("/products/" + id, ProductResponse.class);
+    void whenITryToFindAProductById_thenTheProductShouldBeRetrieved(int id) {
+        ProductResponse response = client.getProductById(id).body();
+        assertNotNull(response);
         assertEquals(products[id - 1], response.getName());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {5, 6, 7, 8})
+    @Order(4)
+    void whenITryToFindAnNonExistingProduct_thenAn404ErrorShouldBeRetrieved(int id) {
+        assertEquals(HttpStatus.NOT_FOUND, client.getProductById(id).getStatus());
     }
 }
