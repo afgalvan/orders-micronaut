@@ -1,6 +1,6 @@
 package tech.afgalvan.products.controllers.responses;
 
-public class ProductResponse {
+public class ProductResponse implements Response {
     private int id;
     private String name;
     private double price;

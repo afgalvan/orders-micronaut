@@ -10,7 +10,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@MappedEntity
+@MappedEntity("products")
 public class Product {
     @Id
     @GeneratedValue(GeneratedValue.Type.AUTO)

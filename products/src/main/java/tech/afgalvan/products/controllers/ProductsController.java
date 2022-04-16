@@ -3,7 +3,6 @@ package tech.afgalvan.products.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.data.exceptions.DataAccessException;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -16,13 +15,13 @@ import org.slf4j.LoggerFactory;
 import tech.afgalvan.products.controllers.requests.CreateProductRequest;
 import tech.afgalvan.products.controllers.responses.ErrorResponse;
 import tech.afgalvan.products.controllers.responses.ProductResponse;
+import tech.afgalvan.products.controllers.responses.Response;
 import tech.afgalvan.products.models.Product;
 import tech.afgalvan.products.models.exceptions.ProductNotFoundException;
 import tech.afgalvan.products.services.ProductsService;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @Controller("/api/products")
@@ -49,7 +48,7 @@ public class ProductsController {
     @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "400", description = "Bad request")
     @Get("/{id}")
-    public HttpResponse getProductById(int id) {
+    public HttpResponse<Response> getProductById(int id) {
         try {
             Product product = productsService.getProductById(id);
             return HttpResponse.ok(mapper.convertValue(product, ProductResponse.class));
@@ -58,30 +57,18 @@ public class ProductsController {
         }
     }
 
-    @ApiResponse(content = @Content(schema = @Schema(implementation = ProductResponse.class)))
-    @ApiResponse(responseCode = "201", description = "Product successfully created")
-    @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "201", description = "Product successfully created", content = @Content(schema = @Schema(implementation = ProductResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @Post
-    public HttpResponse saveProduct(@Body @Valid CreateProductRequest command) {
+    public HttpResponse<Response> saveProduct(@Body @Valid CreateProductRequest command) {
         try {
-            Product product = productsService.saveProduct(mapper.convertValue(command, Product.class));
-            ProductResponse response = mapProductToResponse(product);
-
-            return HttpResponse
-                    .created(response)
-                    .headers(headers -> addLocationHeader(headers, response));
+            Product product = productsService
+                .saveProduct(mapper.convertValue(command, Product.class));
+            return HttpResponse.created(mapProductToResponse(product));
         } catch (ConstraintViolationException | DataAccessException e) {
             logger.error(e.getMessage());
             return HttpResponse.badRequest(new ErrorResponse(400, "Error while saving the product"));
         }
-    }
-
-    private void addLocationHeader(MutableHttpHeaders headers, ProductResponse product) {
-        headers.location(location(product.getId()));
-    }
-
-    private URI location(Integer id) {
-        return URI.create("/products/" + id);
     }
 
     private ProductResponse mapProductToResponse(Product product) {

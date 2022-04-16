@@ -1,6 +1,6 @@
 package tech.afgalvan.products.controllers.responses;
 
-public class ErrorResponse {
+public class ErrorResponse implements Response {
     private int error;
     private String message;
 

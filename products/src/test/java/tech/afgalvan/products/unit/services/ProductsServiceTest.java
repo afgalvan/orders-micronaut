@@ -35,9 +35,9 @@ class ProductsServiceTest {
 
     @Test
     void testProductIsStoredCorrectly() {
-        when(productsRepository.findAll()).then(invocation -> ProductStub.getProductsAnswer());
+        when(productsRepository.asList()).then(invocation -> ProductStub.getProductsAnswer());
         assertEquals(ProductStub.getProductsAnswer(), productsService.getProducts());
-        verify(productsRepository).findAll();
+        verify(productsRepository).asList();
     }
 
     @Test
