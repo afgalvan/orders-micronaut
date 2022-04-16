@@ -10,11 +10,15 @@ public class CreateProductRequest {
     private String name;
     private URI imageUri;
     private double price;
+    private String description;
+    private int stock;
 
-    public CreateProductRequest(String name, String imageUri, double price) {
+    public CreateProductRequest(String name, String imageUri, double price, String description, int stock) {
         this.name = name;
         this.price = price;
         this.imageUri = URI.create(imageUri);
+        this.description = description;
+        this.stock = stock;
     }
 
     public CreateProductRequest() {
@@ -42,5 +46,21 @@ public class CreateProductRequest {
 
     public void setImageUri(String imageUri) throws URISyntaxException {
         this.imageUri = new URI(imageUri);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 }

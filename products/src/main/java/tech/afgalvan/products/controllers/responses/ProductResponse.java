@@ -5,6 +5,8 @@ public class ProductResponse {
     private String name;
     private double price;
     private String imageUri;
+    private String description;
+    private int stock;
 
     public int getId() {
         return id;
@@ -36,5 +38,21 @@ public class ProductResponse {
 
     public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 }

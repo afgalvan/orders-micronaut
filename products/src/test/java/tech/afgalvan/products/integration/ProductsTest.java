@@ -47,7 +47,7 @@ class ProductsTest {
     }
 
     private static CreateProductRequest productOf(String name) {
-        return new CreateProductRequest(name, "https://github.com", 0);
+        return new CreateProductRequest(name, "https://github.com", 0, "lit", 10);
     }
 
     public static Stream<Arguments> generateRequests() {
