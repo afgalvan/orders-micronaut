@@ -26,8 +26,8 @@ jobs:
           java-version: 17
 
       - name: 🛠 Build project
-      - uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: |
-          build
-          --no-daemon
+            build
+            --no-daemon
