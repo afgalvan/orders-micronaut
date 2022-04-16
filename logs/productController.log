@@ -1,0 +1,2 @@
+21:58:58.940 ERROR t.a.p.c.ProductsController - Error executing PERSIST: ERROR: null value in column "update_date_time" of relation "product" violates not-null constraint
+  Detail: Failing row contains (1, string, 0, string, string, 0, 2022-04-16 02:58:58.842317, null).

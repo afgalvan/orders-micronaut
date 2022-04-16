@@ -11,6 +11,8 @@ import io.micronaut.http.annotation.Post;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tech.afgalvan.products.controllers.requests.CreateProductRequest;
 import tech.afgalvan.products.controllers.responses.ErrorResponse;
 import tech.afgalvan.products.controllers.responses.ProductResponse;
@@ -22,16 +24,17 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller("/api/products")
 public class ProductsController {
     private final ProductsService productsService;
     private final ObjectMapper mapper;
+    private final Logger logger;
 
     public ProductsController(ProductsService productsService, ObjectMapper mapper) {
         this.productsService = productsService;
         this.mapper = mapper;
+        this.logger = LoggerFactory.getLogger(ProductsController.class);
     }
 
     @Get
@@ -39,7 +42,7 @@ public class ProductsController {
         return productsService.getProducts()
                 .stream()
                 .map(this::mapProductToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @ApiResponse(responseCode = "200", description = "Product found", content = @Content(schema = @Schema(implementation = ProductResponse.class)))
@@ -68,7 +71,8 @@ public class ProductsController {
                     .created(response)
                     .headers(headers -> addLocationHeader(headers, response));
         } catch (ConstraintViolationException | DataAccessException e) {
-            return HttpResponse.badRequest("Error while saving the product");
+            logger.error(e.getMessage());
+            return HttpResponse.badRequest(new ErrorResponse(400, "Error while saving the product"));
         }
     }
 

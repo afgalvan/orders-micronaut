@@ -24,8 +24,9 @@ public class ProductsServiceImp implements ProductsService {
 
     @Override
     public List<Product> getProducts() {
-        return StreamSupport.stream(productsRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+        return StreamSupport
+                .stream(productsRepository.findAll().spliterator(), false)
+                .toList();
     }
 
     @Override

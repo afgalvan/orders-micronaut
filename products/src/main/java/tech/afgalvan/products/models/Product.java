@@ -1,9 +1,11 @@
 package tech.afgalvan.products.models;
 
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 
+import javax.validation.constraints.Null;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -19,6 +21,7 @@ public class Product {
     private final Integer stock;
     private String description;
     private final LocalDateTime creationDateTime = LocalDateTime.now(Clock.systemUTC());
+    @Null @Nullable
     private LocalDateTime updateDateTime;
 
     public Product(String name, String imageUri, Integer stock, Double price) {
@@ -60,8 +63,20 @@ public class Product {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Integer getStock() {
         return stock;
+    }
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public LocalDateTime getUpdateDateTime() {
+        return updateDateTime;
     }
 
     @Override
