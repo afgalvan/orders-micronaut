@@ -10,4 +10,6 @@ public interface ProductsService {
     List<Product> getProducts();
 
     Product getProductById(int id);
+
+    boolean deleteProductById(int id);
 }

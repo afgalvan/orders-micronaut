@@ -20,7 +20,7 @@ public class Product {
     private final Double price;
     private final Integer stock;
     private String description;
-    private final LocalDateTime creationDateTime = LocalDateTime.now(Clock.systemUTC());
+    private LocalDateTime creationDateTime;
     @Null @Nullable
     private LocalDateTime updateDateTime;
 
@@ -75,8 +75,17 @@ public class Product {
         return creationDateTime;
     }
 
+    public void setCreationDateTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
+    }
+
+    @Nullable
     public LocalDateTime getUpdateDateTime() {
         return updateDateTime;
+    }
+
+    public void setUpdateDateTime(@Nullable LocalDateTime updateDateTime) {
+        this.updateDateTime = updateDateTime;
     }
 
     @Override

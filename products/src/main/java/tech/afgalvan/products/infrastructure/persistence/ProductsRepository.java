@@ -1,4 +1,4 @@
-package tech.afgalvan.products.data;
+package tech.afgalvan.products.infrastructure.persistence;
 
 import io.micronaut.data.jdbc.annotation.JdbcRepository;
 import io.micronaut.data.model.query.builder.sql.Dialect;

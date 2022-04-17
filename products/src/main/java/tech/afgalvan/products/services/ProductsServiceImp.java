@@ -1,10 +1,11 @@
 package tech.afgalvan.products.services;
 
 import jakarta.inject.Singleton;
-import tech.afgalvan.products.data.ProductsRepository;
+import tech.afgalvan.products.infrastructure.persistence.ProductsRepository;
 import tech.afgalvan.products.models.Product;
 import tech.afgalvan.products.models.exceptions.ProductNotFoundException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @Singleton
@@ -33,5 +34,14 @@ public class ProductsServiceImp implements ProductsService {
 
     private ProductNotFoundException throwNotFoundException() {
         return new ProductNotFoundException("Producto no encontrado");
+    }
+
+    public boolean deleteProductById(int id) {
+        try {
+            productsRepository.delete(getProductById(id));
+            return true;
+        } catch (ProductNotFoundException e) {
+            return false;
+        }
     }
 }

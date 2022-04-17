@@ -3,10 +3,7 @@ package tech.afgalvan.products.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.data.exceptions.DataAccessException;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -39,9 +36,9 @@ public class ProductsController {
     @Get
     public List<ProductResponse> getProducts() {
         return productsService.getProducts()
-                .stream()
-                .map(this::mapProductToResponse)
-                .toList();
+            .stream()
+            .map(this::mapProductToResponse)
+            .toList();
     }
 
     @ApiResponse(responseCode = "200", description = "Product found", content = @Content(schema = @Schema(implementation = ProductResponse.class)))
@@ -65,10 +62,20 @@ public class ProductsController {
             Product product = productsService
                 .saveProduct(mapper.convertValue(request, Product.class));
             return HttpResponse.created(mapProductToResponse(product));
-        } catch (ConstraintViolationException | DataAccessException e) {
+        } catch (DataAccessException | ConstraintViolationException e) {
             logger.error(e.getMessage());
-            return HttpResponse.badRequest(new ErrorResponse(400, "Error while saving the product"));
+            return HttpResponse.badRequest(new ErrorResponse(400, "Invalid input information"));
         }
+    }
+
+    @ApiResponse(responseCode = "200", description = "Product successfully deleted", content = @Content(schema = @Schema(implementation = String.class)))
+    @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(schema = @Schema(implementation = String.class)))
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @Delete("/{id}")
+    public HttpResponse<String> deleteProductById(int id) {
+        return productsService.deleteProductById(id)
+            ? HttpResponse.ok("Product %d deleted".formatted(id))
+            : HttpResponse.notFound("Product %d not found".formatted(id));
     }
 
     private ProductResponse mapProductToResponse(Product product) {

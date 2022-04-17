@@ -3,6 +3,7 @@ package tech.afgalvan.products.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
+import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.MethodOrderer;
@@ -41,11 +42,24 @@ class ProductsTest {
 
     @ParameterizedTest
     @ArgumentsSource(RequestsArgumentsProvider.class)
-    @Order(1)
+    @Order(0)
     void whenISendAPOSTRequestToTheProductsEndpoint_thenTheProductShouldBeSaved(CreateProductRequest request) {
         HttpResponse<ProductResponse> response = client.saveProduct(request);
         assertEquals(HttpStatus.CREATED, response.getStatus());
         assertNotNull(response.body());
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(RequestsArgumentsProvider.class)
+    @Order(1)
+    void whenISendABadPOSTRequestToTheProductsEndpoint_thenA400ErrorShouldBeRetrieved(CreateProductRequest request) {
+        request.setName(null);
+        try {
+            HttpResponse<?> response = client.saveProduct(request);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
+        } catch (HttpClientResponseException e) {
+            // ignored
+        }
     }
 
     @Test
@@ -70,6 +84,15 @@ class ProductsTest {
     @ValueSource(ints = {5, 6, 7, 8})
     @Order(4)
     void whenITryToFindAnNonExistingProduct_thenAn404ErrorShouldBeRetrieved(int id) {
+        assertEquals(HttpStatus.NOT_FOUND, client.getProductById(id).getStatus());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3, 4})
+    @Order(5)
+    void whenITryToDeleteAProductById_thenTheProductMustNotExist(int id) {
+        HttpResponse<String> response = client.deleteProductById(id);
+        assertEquals(HttpStatus.OK, response.getStatus());
         assertEquals(HttpStatus.NOT_FOUND, client.getProductById(id).getStatus());
     }
 }

@@ -4,6 +4,7 @@ import io.micronaut.core.annotation.Introspected;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 
 @Introspected
 public class CreateProductRequest {
@@ -12,6 +13,7 @@ public class CreateProductRequest {
     private double price;
     private String description;
     private int stock;
+    private final LocalDateTime creationDateTime = LocalDateTime.now();
 
     public CreateProductRequest(String name, String imageUri, double price, String description, int stock) {
         this.name = name;
@@ -62,5 +64,9 @@ public class CreateProductRequest {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
     }
 }

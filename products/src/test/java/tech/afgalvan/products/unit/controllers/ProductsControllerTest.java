@@ -46,12 +46,12 @@ class ProductsControllerTest {
         HttpResponse<ProductResponse> response = client.saveProduct(request);
         assertEquals(HttpStatus.CREATED, response.getStatus());
         verify(productsService).saveProduct(any(Product.class));
-        clearInvocations(productsService);
     }
 
     @Test
     void testProductGetRequest() {
-        when(productsService.getProducts()).then(invocation -> ProductStub.getProductsAnswer());
+        when(productsService.getProducts())
+            .then(invocation -> ProductStub.getProductsAnswer());
 
         List<Integer> response = client.getProducts()
             .stream()
@@ -69,6 +69,7 @@ class ProductsControllerTest {
     void testProductGetByIdRequest(int id) {
         when(productsService.getProductById(any(Integer.class)))
             .then(invocation -> ProductStub.getStoredProductAnswer());
+
         HttpResponse<ProductResponse> response = client.getProductById(id);
         assertEquals(HttpStatus.OK, response.getStatus());
         assertEquals(ProductStub.getStoredProductAnswer(), mapper.convertValue(response.body(), Product.class));
@@ -80,9 +81,21 @@ class ProductsControllerTest {
     void testFindNonExistingProductReturns404(int id) {
         when(productsService.getProductById(any(Integer.class)))
             .thenThrow(ProductNotFoundException.class);
+
         HttpResponse<ProductResponse> response = client.getProductById(id);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatus());
         verify(productsService).getProductById(any(Integer.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3, 4})
+    void testAnExistingProductIsDeleted(int id) {
+        when(productsService.deleteProductById(any(Integer.class)))
+            .thenReturn(true);
+
+        HttpResponse<String> response = client.deleteProductById(id);
+        assertEquals(HttpStatus.OK, response.getStatus());
+        verify(productsService).deleteProductById(any(Integer.class));
     }
 
     @MockBean(ProductsService.class)
