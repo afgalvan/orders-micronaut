@@ -21,7 +21,7 @@ public class Product {
     private final Integer stock;
     private String description;
     private LocalDateTime creationDateTime;
-    @Null @Nullable
+    @Nullable
     private LocalDateTime updateDateTime;
 
     public Product(String name, String imageUri, Integer stock, Double price) {

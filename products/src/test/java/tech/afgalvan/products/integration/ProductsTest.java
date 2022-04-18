@@ -14,7 +14,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import tech.afgalvan.products.controllers.requests.CreateProductRequest;
+import tech.afgalvan.products.controllers.requests.UpdateProductRequest;
 import tech.afgalvan.products.controllers.responses.ProductResponse;
+import tech.afgalvan.products.models.Product;
 import tech.afgalvan.products.shared.ProductsClient;
 import tech.afgalvan.products.shared.RequestsArgumentsProvider;
 import tech.afgalvan.products.shared.stubs.ProductStub;
@@ -66,13 +68,13 @@ class ProductsTest {
     @Order(2)
     void whenISendAGETRequestToTheProductsEndpoint_thenAllRegisteredProductsShouldBeRetrieved() {
         List<String> response = getAllProducts()
-                .map(ProductResponse::getName)
-                .toList();
+                                    .map(ProductResponse::getName)
+                                    .toList();
         assertIterableEquals(Arrays.asList(products), response);
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4})
+    @ValueSource(ints = { 1, 2, 3, 4 })
     @Order(3)
     void whenITryToFindAProductById_thenTheProductShouldBeRetrieved(int id) {
         ProductResponse response = client.getProductById(id).body();
@@ -81,18 +83,33 @@ class ProductsTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {5, 6, 7, 8})
+    @ValueSource(ints = { 1, 2, 3, 4 })
     @Order(4)
-    void whenITryToFindAnNonExistingProduct_thenAn404ErrorShouldBeRetrieved(int id) {
-        assertEquals(HttpStatus.NOT_FOUND, client.getProductById(id).getStatus());
+    void test(int id) {
+        var nextId = id > 4 ? 1 : id;
+        UpdateProductRequest next =
+            mapper.convertValue(client.getProductById(nextId).body(),
+            UpdateProductRequest.class);
+        System.out.println(next.getImageUri());
+        HttpResponse<String> response = client.updateProductById(id, next);
+        assertEquals(HttpStatus.OK, response.getStatus());
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4})
-    @Order(5)
+    @ValueSource(ints = { 5, 6, 7, 8 })
+    @Order(6)
+    void whenITryToFindAnNonExistingProduct_thenAn404ErrorShouldBeRetrieved(int id) {
+        assertEquals(HttpStatus.NOT_FOUND, client.getProductById(id)
+                                                 .getStatus());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3, 4 })
+    @Order(7)
     void whenITryToDeleteAProductById_thenTheProductMustNotExist(int id) {
         HttpResponse<String> response = client.deleteProductById(id);
         assertEquals(HttpStatus.OK, response.getStatus());
-        assertEquals(HttpStatus.NOT_FOUND, client.getProductById(id).getStatus());
+        assertEquals(HttpStatus.NOT_FOUND, client.getProductById(id)
+                                                 .getStatus());
     }
 }

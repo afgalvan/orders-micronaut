@@ -59,7 +59,7 @@ class ProductsServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4})
+    @ValueSource(ints = { 1, 2, 3, 4 })
     void testThatProductCanBeDeleted(int id) {
         when(productsRepository.findById(any(Integer.class)))
             .thenReturn(Optional.of(ProductStub.getStoredProductAnswer()));
@@ -72,7 +72,7 @@ class ProductsServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4})
+    @ValueSource(ints = { 1, 2, 3, 4 })
     void testThatNonExistingProductCanNotBeDeleted(int id) {
         when(productsRepository.findById(any(Integer.class)))
             .thenReturn(Optional.empty());
@@ -80,6 +80,19 @@ class ProductsServiceTest {
         assertFalse(productsService.deleteProductById(id));
         verify(productsRepository).findById(any(Integer.class));
         verify(productsRepository, never()).delete(any(Product.class));
+    }
+
+    @Test
+    void testThatAnExistingUserCanBeUpdated() {
+        Product original = ProductStub.getStoredProductAnswer();
+        when(productsRepository.findById(any(Integer.class)))
+            .thenReturn(Optional.of(original));
+        when(productsRepository.update(any(Product.class)))
+            .thenReturn(ProductStub.getUpdatedProductAnswer());
+
+        productsService.updateProduct(ProductStub.getUpdatedProductAnswer());
+        verify(productsRepository).findById(any(Integer.class));
+        verify(productsRepository).update(any(Product.class));
     }
 
     @MockBean(ProductsRepository.class)

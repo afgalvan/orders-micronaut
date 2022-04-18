@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.afgalvan.products.controllers.requests.CreateProductRequest;
+import tech.afgalvan.products.controllers.requests.UpdateProductRequest;
 import tech.afgalvan.products.controllers.responses.ErrorResponse;
 import tech.afgalvan.products.controllers.responses.ProductResponse;
 import tech.afgalvan.products.controllers.responses.Response;
@@ -36,9 +37,9 @@ public class ProductsController {
     @Get
     public List<ProductResponse> getProducts() {
         return productsService.getProducts()
-            .stream()
-            .map(this::mapProductToResponse)
-            .toList();
+                              .stream()
+                              .map(this::mapProductToResponse)
+                              .toList();
     }
 
     @ApiResponse(responseCode = "200", description = "Product found", content = @Content(schema = @Schema(implementation = ProductResponse.class)))
@@ -60,11 +61,23 @@ public class ProductsController {
     public HttpResponse<Response> saveProduct(@Body @Valid CreateProductRequest request) {
         try {
             Product product = productsService
-                .saveProduct(mapper.convertValue(request, Product.class));
+                                  .saveProduct(mapper.convertValue(request, Product.class));
             return HttpResponse.created(mapProductToResponse(product));
         } catch (DataAccessException | ConstraintViolationException e) {
             logger.error(e.getMessage());
             return HttpResponse.badRequest(new ErrorResponse(400, "Invalid input information"));
+        }
+    }
+
+    @Put
+    public HttpResponse<String> updateProductById(
+        @Body @Valid UpdateProductRequest request) {
+        try {
+            Product updatedProduct = mapper.convertValue(request, Product.class);
+            productsService.updateProduct(updatedProduct);
+            return HttpResponse.ok("");
+        } catch (ProductNotFoundException e) {
+            return HttpResponse.notFound("");
         }
     }
 
@@ -74,8 +87,8 @@ public class ProductsController {
     @Delete("/{id}")
     public HttpResponse<String> deleteProductById(int id) {
         return productsService.deleteProductById(id)
-            ? HttpResponse.ok("Product %d deleted".formatted(id))
-            : HttpResponse.notFound("Product %d not found".formatted(id));
+                   ? HttpResponse.ok("Product %d deleted".formatted(id))
+                   : HttpResponse.notFound("Product %d not found".formatted(id));
     }
 
     private ProductResponse mapProductToResponse(Product product) {

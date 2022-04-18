@@ -18,8 +18,8 @@ public class RequestsArgumentsProvider implements ArgumentsProvider {
 
     public static Stream<Arguments> generateRequests(String[] products) {
         return Stream.of(products)
-            .map(RequestsArgumentsProvider::productOf)
-            .map(Arguments::of);
+                     .map(RequestsArgumentsProvider::productOf)
+                     .map(Arguments::of);
     }
 
     private static CreateProductRequest productOf(String name) {

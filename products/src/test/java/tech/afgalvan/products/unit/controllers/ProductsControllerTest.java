@@ -54,9 +54,9 @@ class ProductsControllerTest {
             .then(invocation -> ProductStub.getProductsAnswer());
 
         List<Integer> response = client.getProducts()
-            .stream()
-            .map(ProductResponse::getId)
-            .toList();
+                                       .stream()
+                                       .map(ProductResponse::getId)
+                                       .toList();
         assertIterableEquals(
             ProductStub.getAllProductsResponse(ProductResponse::getId),
             response
@@ -65,7 +65,7 @@ class ProductsControllerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4})
+    @ValueSource(ints = { 1, 2, 3, 4 })
     void testProductGetByIdRequest(int id) {
         when(productsService.getProductById(any(Integer.class)))
             .then(invocation -> ProductStub.getStoredProductAnswer());
@@ -77,7 +77,7 @@ class ProductsControllerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4})
+    @ValueSource(ints = { 1, 2, 3, 4 })
     void testFindNonExistingProductReturns404(int id) {
         when(productsService.getProductById(any(Integer.class)))
             .thenThrow(ProductNotFoundException.class);
@@ -88,7 +88,7 @@ class ProductsControllerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4})
+    @ValueSource(ints = { 1, 2, 3, 4 })
     void testAnExistingProductIsDeleted(int id) {
         when(productsService.deleteProductById(any(Integer.class)))
             .thenReturn(true);

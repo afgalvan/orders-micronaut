@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class ProductStub {
-    public  static final String[] PRODUCT_NAMES = {"shampoo", "pencil", "soap", "paper"};
+    public static final String[] PRODUCT_NAMES = { "shampoo", "pencil", "soap", "paper" };
     public static final Product DEFAULT = new Product(
         "name",
         "https://img.jakpost.net/c/2017/05/22/2017_05_22_27382_1495457626._large.jpg",
@@ -18,11 +18,17 @@ public class ProductStub {
         2000.0
     );
     private static final ObjectMapper mapper = JsonMapper.builder()
-        .addModule(new JavaTimeModule())
-        .build();
+                                                         .addModule(new JavaTimeModule())
+                                                         .build();
 
     public static Product getStoredProductAnswer() {
-        return new Product(1, DEFAULT.getName(), DEFAULT.getImageUri(), 10, DEFAULT.getPrice());
+        return new Product(1, DEFAULT.getName(), DEFAULT.getImageUri(),
+            DEFAULT.getStock(), DEFAULT.getPrice());
+    }
+
+    public static Product getUpdatedProductAnswer() {
+        return new Product(1, "updated", DEFAULT.getImageUri(),
+            DEFAULT.getStock(), DEFAULT.getPrice());
     }
 
     public static List<Product> getProductsAnswer() {
