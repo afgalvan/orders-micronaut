@@ -60,16 +60,16 @@ public class ProductResponse implements Response {
         this.stock = stock;
     }
 
-    public LocalDateTime getCreationDateTime() {
-        return creationDateTime;
+    public String getCreationDateTime() {
+        return creationDateTime.toString();
     }
 
     public void setCreationDateTime(LocalDateTime creationDateTime) {
         this.creationDateTime = creationDateTime;
     }
 
-    public LocalDateTime getUpdateDateTime() {
-        return updateDateTime;
+    public String getUpdateDateTime() {
+        return updateDateTime.toString();
     }
 
     public void setUpdateDateTime(LocalDateTime updateDateTime) {

@@ -17,7 +17,6 @@ datasources:
     driverClassName: org.postgresql.Driver
     username: ${JDBC_USER:postgres}
     password: 'root'
-    schema-generate: CREATE_DROP
     dialect: POSTGRES
 netty:
   default:
