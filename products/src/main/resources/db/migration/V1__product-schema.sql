@@ -1,6 +1,6 @@
 CREATE TABLE PRODUCTS
 (
-    id            INT                         NOT NULL PRIMARY KEY,
+    id            SERIAL                      PRIMARY KEY,
     name          VARCHAR(255)                NOT NULL,
     image_uri     VARCHAR(255)                NOT NULL,
     price         NUMERIC(6, 2)               NOT NULL,

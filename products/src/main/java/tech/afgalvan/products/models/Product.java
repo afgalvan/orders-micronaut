@@ -5,8 +5,6 @@ import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 
-import javax.validation.constraints.Null;
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Objects;
 

@@ -16,7 +16,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import tech.afgalvan.products.controllers.requests.CreateProductRequest;
 import tech.afgalvan.products.controllers.requests.UpdateProductRequest;
 import tech.afgalvan.products.controllers.responses.ProductResponse;
-import tech.afgalvan.products.models.Product;
 import tech.afgalvan.products.shared.ProductsClient;
 import tech.afgalvan.products.shared.RequestsArgumentsProvider;
 import tech.afgalvan.products.shared.stubs.ProductStub;

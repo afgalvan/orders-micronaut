@@ -1,6 +1,5 @@
 package tech.afgalvan.products.controllers.requests;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micronaut.core.annotation.Introspected;
 
 import java.net.URI;
