@@ -18,11 +18,11 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_PASSWORD
-              value: "jdbc"
+              value: "products"
             - name: POSTGRES_USER
-              value: "jdbc"
+              value: "products"
             - name: POSTGRES_DB
-              value: "jdbc"
+              value: "products"
           volumeMounts:
             - name: jdbc-postgres-data
               mountPath: /var/lib/postgresql/data
@@ -34,7 +34,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: jdbc-postgres-service
+  name: jdbc-postgres
 spec:
   type: ClusterIP
   ports:

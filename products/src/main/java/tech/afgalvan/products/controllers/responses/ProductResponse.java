@@ -69,7 +69,7 @@ public class ProductResponse implements Response {
     }
 
     public String getUpdateDateTime() {
-        return updateDateTime.toString();
+        return updateDateTime == null ? null : updateDateTime.toString();
     }
 
     public void setUpdateDateTime(LocalDateTime updateDateTime) {
