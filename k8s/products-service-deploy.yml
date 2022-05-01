@@ -13,13 +13,17 @@ spec:
     spec:
       containers:
         - name: products-service
-          image: andresgalvan/products-service:v1.0
+          image: andresgalvan/products-app:v1.0
           imagePullPolicy: Always
           ports:
             - containerPort: 9000
           env:
-            - name: JDBC_URL
-              value: jdbc:postgresql://jdbc-postgres-service:5432/postgres
+            - name: PRODUCTS_URL
+              value: jdbc:postgresql://jdbc-postgres:5432/products
+            - name: PRODUCTS_USER
+              value: products
+            - name: PRODUCTS_PASSWORD
+              value: 'products'
           readinessProbe:
             httpGet:
               path: /health

@@ -1,6 +1,0 @@
-applicationType: default
-defaultPackage: Productos
-testFramework: junit
-sourceLanguage: java
-buildTool: gradle
-features: [annotation-api, app-name, data, data-jdbc, flyway, gradle, http-client, jackson-databind, java, java-application, jdbc-hikari, jib, junit, kubernetes, logback, management, micronaut-build, netty-server, openapi, postgres, readme, shade, swagger-ui, testcontainers, yaml]

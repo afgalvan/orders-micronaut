@@ -1,6 +1,9 @@
 micronaut:
   application:
-    name: pedidos
+    name: products
+  server:
+    port:
+      9000
   router:
     static-resources:
       swagger:
@@ -11,13 +14,16 @@ micronaut:
         mapping: /swagger-ui/**
 datasources:
   default:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: ${PRODUCTS_URL:`jdbc:postgresql://localhost:5432/products`}
     driverClassName: org.postgresql.Driver
-    username: jdbc
-    password: 'jdbc'
-    schema-generate: CREATE_DROP
+    username: ${PRODUCTS_USER:postgres}
+    password: 'root'
     dialect: POSTGRES
 netty:
   default:
     allocator:
       max-order: 3
+flyway:
+  datasources:
+    default:
+      enabled: true
